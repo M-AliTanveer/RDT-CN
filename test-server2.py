@@ -11,12 +11,15 @@ import rdt3 as rdt
 
 
 def main():
+    client_IP = "localhost"
+    drop_Rate = str(input("Enter drop rate: "))
+    error_Rate = str(input("Enter Error rate:"))
     MSG_LEN = rdt.PAYLOAD
 
     # Check the number of input arguments
-    if len(sys.argv) != 4:
-        print("Usage:  " + sys.argv[0] + "  <client IP>  <drop rate>  <error rate>")
-        sys.exit(0)
+    # if len(sys.argv) != 4:
+    #     print("Usage:  " + sys.argv[0] + "  <client IP>  <drop rate>  <error rate>")
+    #     sys.exit(0)
 
     # check whether the folder exists
     try:
@@ -27,7 +30,7 @@ def main():
         sys.exit(0)
 
     # set up the RDT simulation
-    rdt.rdt_network_init(sys.argv[2], sys.argv[3])
+    rdt.rdt_network_init(drop_Rate, error_Rate)
 
     # create RDT socket
     sockfd = rdt.rdt_socket()
@@ -40,7 +43,7 @@ def main():
         sys.exit(0)
 
     # specify the IP address & port number of remote peer
-    if rdt.rdt_peer(sys.argv[1], rdt.CPORT) == -1:
+    if rdt.rdt_peer(client_IP, rdt.CPORT) == -1:
         sys.exit(0)
 
     # implement a simple handshaking protocol at the application layer
